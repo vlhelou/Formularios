@@ -1,0 +1,127 @@
+<div *ngIf="Selecionado">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Edição de formulário</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" class="form-control" [(ngModel)]="Selecionado.Nome">
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-primary" (click)="SalvaForm()"><i class="fas fa-save"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <form [formGroup]="FrmCampo">
+
+                        <div class="card">
+                            <div class="card-header">Edição de Campos</div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Nome</label>
+                                    <input type="text" class="form-control" formControlName="Nome">
+                                </div>
+                                <div class="form-group">
+                                    <label>Obrigatorio</label>
+                                    <select class="form-control" formControlName="Obrigatorio">
+                                        <option [value]="true">Sim</option>
+                                        <option [value]="false">Não</option>
+                                    </select>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tipo</label>
+                                    <select class="form-control" formControlName="Tipo">
+                                        <option value='subjetivo'>Subjetivo</option>
+                                        <option value='objetivo'>Objetivo</option>
+                                        <option value='multipla'>Múltipla escolha</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" [hidden]="FrmCampo.controls.Tipo.value!='subjetivo'">
+                                    <label>Tipo Dado</label>
+                                    <select class="form-control" formControlName="TipoDado">
+                                        <option value='text'>Texto</option>
+                                        <option value='number'>Número</option>
+                                        <option value='date'>Data</option>
+                                        <option value='time'>Hora</option>
+                                        <option value='datetime'>Data e Hora</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" [hidden]="FrmCampo.controls.Tipo.value!='subjetivo'">
+                                    <label>Tamanho</label>
+                                    <input type="number" class="form-control" formControlName="Tamanho">
+                                </div>
+                                <div class="form-group" [hidden]="FrmCampo.controls.Tipo.value=='subjetivo'">
+                                    <label>Opções</label>
+                                    <input type="text" class="form-control" formControlName="strOpcoes">
+                                </div>
+
+                            </div>
+                            <div class="card-footer text-right">
+                                <button class="btn btn-dark" style="margin-right: 15px" (click)="ResetaFormCampo()"><i
+                                        class="fas fa-ban"></i></button>
+                                <button class="btn btn-primary" (click)="GravaCampo()"><i
+                                        class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-top: 15px">
+                <div class="col-md-12">
+                    <p-table [value]="Selecionado.Campos" [responsive]="true" [autoLayout]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Nome</th>
+                                <th>Obrigatório</th>
+                                <th>Tipo</th>
+                                <th>Tipo Dado</th>
+                                <th>Tamanho</th>
+                                <th>Opçoes</th>
+                                <th>Ação</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                            <tr>
+                                <td>{{item.Nome}}</td>
+                                <td>{{item.Obrigatorio}}</td>
+                                <td>{{item.Tipo}}</td>
+                                <td>{{item.TipoDado}}</td>
+                                <td>{{item.Tamanho}}</td>
+                                <td>
+                                    <ul class="list-group">
+                                        <li class="list-group-item" *ngFor="let opt of item.Opcoes">{{opt}}</li>
+
+                                    </ul>
+                                </td>
+                                <td>
+                                    <a class="Hand" (click)="AjustaFormCampo(item)"><i class="fas fa-edit"></i></a>
+                                    <a class="Hand" (click)="ExcluiCampo(item.Id)"
+                                        style="margin-left: 15px; color: red"><i class="fas fa-trash"></i></a>
+                                    <a class="Hand" style="margin-left: 15px; color: blue" *ngIf="item.Ordem!==1" (click)="MoveCampo(item.Id,true)"><i
+                                            class="fas fa-arrow-up"></i></a>
+                                    <a class="Hand" style="margin-left: 15px; color: blue" *ngIf="item.Ordem!==UltimaOrdem" (click)="MoveCampo(item.Id,false)"><i
+                                            class="fas fa-arrow-down"></i></a>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
