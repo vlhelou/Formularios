@@ -109,8 +109,7 @@ export class CadastroFormularioComponent implements OnInit {
     private CalulaUltimaOrdem() {
         this.UltimaOrdem = 0;
         let x = 0;
-        this.Selecionado.Campos.forEach(function (item) {
-            // console.log(item.Ordem);
+        this.Selecionado.Campos.forEach(item => {
             x = item.Ordem;
         });
         this.UltimaOrdem = x;

@@ -43,9 +43,20 @@ export class FormularioService {
         return this.http.get<EdtCampo[]>(url);
     }
 
-    MoveCampo(id: number, up:boolean): Observable<EdtCampo[]> {
+    MoveCampo(id: number, up: boolean): Observable<EdtCampo[]> {
         const url: string = PathUrl + `MoveCampo/${id}/${up}`;
         return this.http.get<EdtCampo[]>(url);
+    }
+
+    GravaPreenchimento(id: number, conteudo: any): Observable<any> {
+        const url: string = PathUrl + `GravaPreenchimento`;
+        const prm = { Id: id, Conteudo: conteudo };
+        return this.http.post<any>(url, prm, httpOptions);
+    }
+
+    Ultimos100(id: number): Observable<any> {
+        const url: string = PathUrl + `Ultimos100/${id}`;
+        return this.http.get<any>(url);
     }
 
 }

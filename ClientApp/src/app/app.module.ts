@@ -12,12 +12,14 @@ import { CadastroFormularioComponent } from './Components/cadastro-formulario/ca
 
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
+import { Lista100Component } from './Components/lista100/lista100.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         PrincipalComponent,
-        CadastroFormularioComponent
+        CadastroFormularioComponent,
+        Lista100Component
     ],
     imports: [
         BrowserModule,

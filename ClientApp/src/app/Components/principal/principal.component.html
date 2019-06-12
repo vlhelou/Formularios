@@ -20,6 +20,8 @@
                                 <a [routerLink]="['/cadastro', item.Id]"><i class="fas fa-edit"></i></a>
                                 <a href="javascript:void(0)" (click)="CriaForm(item.Id)" class="Hand"
                                     style="margin-left: 15px"><i class="far fa-caret-square-right"></i></a>
+                                <a [routerLink]="['/lista100', item.Id]" style="margin-left: 15px"><i
+                                        class="fas fa-bars"></i></a>
                             </td>
                         </tr>
                     </ng-template>
@@ -29,13 +31,20 @@
         </div>
     </div>
     <div class="col-md-9" *ngIf="ShowForm">
+        <h3 class="text-center">{{Formulario.Nome}}</h3>
         <form [formGroup]="FrmGroup" (ngSubmit)="GravaForm()">
             <div *ngFor="let campo of Formulario.Campos" class="form-group">
-                <label>{{campo.Nome}}</label>
+                <label>
+                    <small style="color: red" [hidden]="FrmGroup.controls[campo.NomeUtil].valid">
+                        (Campo Obrigatório)&nbsp;
+                    </small>
+                    {{campo.Nome}}
+                </label>
                 <div [ngSwitch]="campo.Tipo">
                     <div *ngSwitchCase="'subjetivo'">
                         <input type="{{campo.TipoDado}}" formControlName="{{campo.NomeUtil}}" class="form-control"
                             maxlength="{{campo.Tamanho}}" [required]="campo.Obrigatorio">
+
                     </div>
                     <div *ngSwitchCase="'objetivo'">
                         <select formControlName="{{campo.NomeUtil}}" class="form-control"
@@ -50,8 +59,32 @@
                         </select>
                     </div>
                 </div>
+
+            </div>
+            <div class="form-group text-right">
+                <button type="button" class="btn btn-dark" style="margin-right: 15px"> <i class="fas fa-ban"></i>
+                </button>
+                <button type="submit" class="btn btn-primary"> <i class="fas fa-save"></i> </button>
             </div>
         </form>
-        <pre>{{FrmGroup.value|json}}</pre>
     </div>
+</div>
+<div class="row" style="margin-top: 15px;">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Formulário</th>
+                <th>Hora</th>
+                <th>Conteudo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Execucoes">
+                <td>{{item.Formulario.Nome}}</td>
+                <td>{{item.Hora| date:'hh:mm'}}</td>
+                <td>{{item.Preenchimento}}</td>
+
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -3,8 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormularioService } from '../../Services/formulario.service';
 import { EtdFormulario } from '../../Types/EtdFormulario';
 
-
-
 @Component({
     selector: 'app-principal',
     templateUrl: './principal.component.html',
@@ -13,6 +11,7 @@ import { EtdFormulario } from '../../Types/EtdFormulario';
 
 export class PrincipalComponent implements OnInit {
     Lista: EtdFormulario[] = [];
+    Execucoes: any[] = [];
     Formulario: EtdFormulario;
     FrmGroup: FormGroup;
     ShowForm = false;
@@ -25,7 +24,6 @@ export class PrincipalComponent implements OnInit {
     CriaForm(id: number): void {
         this.form.Busca(id).subscribe(p => {
             this.Formulario = p;
-            console.log(this.Formulario);
             const grupo = {};
             this.Formulario.Campos.forEach(campo => {
                 grupo[campo.NomeUtil] = new FormControl('');
@@ -35,7 +33,21 @@ export class PrincipalComponent implements OnInit {
         });
     }
 
+
+    ZeraForm(): void {
+        const grupo = {};
+        this.Formulario.Campos.forEach(campo => {
+            grupo[campo.NomeUtil] = new FormControl('');
+        });
+        this.FrmGroup = new FormGroup(grupo);
+        this.ShowForm = true;
+    }
+
     GravaForm(): void {
-        console.log(this.FrmGroup.value);
+        this.form.GravaPreenchimento(this.Formulario.Id, this.FrmGroup.value).subscribe(p => {
+            this.Execucoes.push(p);
+            this.ZeraForm();
+        });
+
     }
 }
